@@ -11,12 +11,14 @@ public class Juego2048
 	int[][] tablero;
 	boolean movimientoDetectado;
 	int score;
+	public Integer mov;
 	
 	/*constructor*/
 	public Juego2048()
 	{
 		tablero = new int[4][4];
 		score = 0;
+		mov=0;
 		generarNumero();
 		generarNumero();
 	}
@@ -38,6 +40,7 @@ public class Juego2048
 	public void moverDerecha()
 	{
 		if (movimientoValidoDerecha())
+			mov++;
 		{
 			for (int i = tablero.length-1; i >=0 ; i--)
 				for (int j = tablero[i].length-1; j >=0 ; j--)
@@ -93,6 +96,7 @@ public class Juego2048
 			for (int columna = 0; columna < tablero[fila].length-1; columna++)
 				if(tablero[fila][columna] != 0 && (tablero[fila][columna+1] == 0 || tablero[fila][columna] == tablero[fila][columna+1]))
 				{
+					mov++;
 					return true;
 				}
 		return false;
@@ -157,6 +161,7 @@ public class Juego2048
 			for (int columna = tablero[fila].length-1; columna >=1 ; columna--)
 				if(tablero[fila][columna] != 0 && ( tablero[fila][columna-1] == 0 || tablero[fila][columna-1] == tablero[fila][columna]))
 				{
+					mov++;
 					return true;
 				}
 		return false;
@@ -283,6 +288,7 @@ public class Juego2048
 				if(tablero[fila][columna] != 0 && (tablero[fila+1][columna] == 0 || tablero[fila+1][columna] == tablero[fila][columna]))
 				{
 					System.out.println("ENTRO! en la fila: "+fila+" COlumna: "+columna);
+					mov++;
 					return true;
 				}
 		return false;
