@@ -21,6 +21,15 @@ import javax.swing.JLabel;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
+
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 public class InterfazGrafica implements KeyListener {
 
@@ -71,8 +80,9 @@ public class InterfazGrafica implements KeyListener {
 		JPanel panel = crearPanel();
 		tablero(panel);
 		scorePuntos = new JLabel("0");
-		highPuntos= new JLabel("500");
+		highPuntos= new JLabel(""+ordenarResultados()[0]+"");
 		panelInfo();
+		ordenarResultados();
 
 		frame.setFocusable(true);
 		frame.addKeyListener(new KeyAdapter() {
@@ -156,15 +166,144 @@ public class InterfazGrafica implements KeyListener {
 		info.add(panelNewGame);
 		panelNewGame.setLayout(null);
 		
-		JLabel newGame = new JLabel("NEW GAME");
+		JButton newGame = new JButton("NEW GAME");
+		newGame.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				newGame.setBackground(new Color(217, 133, 91));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				newGame.setBackground(new Color(237, 153, 91));
+			}
+		});
+		
 		newGame.setHorizontalAlignment(SwingConstants.CENTER);
-		newGame.setBounds(0, 11, 180, 14);
+		newGame.setBounds(0, 0, 182, 33);
 		newGame.setFont(font3);
+		newGame.setBorder(null);
+		newGame.setBackground(new Color(237, 153, 91));
 		newGame.setForeground(new Color(255, 254, 253));
 		panelNewGame.add(newGame);
+		
+		JPanel resultados = new JPanel();
+		resultados.setBounds(340, 11, 234, 320);
+		frame.getContentPane().add(resultados);
+		resultados.setLayout(null);
+		
+		JPanel panelRes = new JPanel();
+		panelRes.setBounds(21, 0, 182, 200);
+		panelRes.setBackground(new Color(187, 173, 160));
+		resultados.add(panelRes);
+		panelRes.setLayout(null);
+		
+			
+				
+		JLabel tituloRes = new JLabel("HIGHSCORES");
+		tituloRes.setHorizontalAlignment(SwingConstants.CENTER);
+		tituloRes.setBounds(10, 11, 160, 30);
+		tituloRes.setFont(font2);
+		tituloRes.setForeground(new Color(238, 224, 211));
+		panelRes.add(tituloRes);
+		
+		
+		
+		JButton volverInfo = new JButton("VOLVER");
+		volverInfo.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				volverInfo.setBackground(new Color(217, 133, 91));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				volverInfo.setBackground(new Color(237, 153, 91));
+			}
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				panelRes.setVisible(false);
+				info.setVisible(true);
+				volverInfo.setVisible(false);
+				
+			}
+		});
+		volverInfo.setBackground(new Color(237, 153, 91));
+		volverInfo.setBorder(null);
+		volverInfo.setFont(font3);
+		volverInfo.setForeground(new Color(255, 254, 253));
+		volverInfo.setBounds(21, 250, 182, 33);
+		volverInfo.setVisible(false);
+		resultados.add(volverInfo);
+		
+		JButton btnMejoresPuntajes = new JButton("MEJORES PUNTAJES");
+		btnMejoresPuntajes.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				btnMejoresPuntajes.setBackground(new Color(217, 133, 91));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				btnMejoresPuntajes.setBackground(new Color(237, 153, 91));
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				info.setVisible(false);
+				panelRes.setVisible(true);
+				volverInfo.setVisible(true);
+				mostrarHighscores(panelRes, ordenarResultados());
+			}
+		});
+		btnMejoresPuntajes.setBackground(new Color(237, 153, 91));
+		btnMejoresPuntajes.setBorder(null);
+		btnMejoresPuntajes.setFont(font3);
+		btnMejoresPuntajes.setForeground(new Color(255, 254, 253));
+		btnMejoresPuntajes.setBounds(21, 250, 182, 33);
+		btnMejoresPuntajes.setBounds(21, 185, 182, 33);
+		info.add(btnMejoresPuntajes);	
+		
+		
+		
 			
 		return info;
 		
+	}
+	
+	public Integer[] ordenarResultados() {
+		Integer[] array = juego.getPuntajes();
+		Comparator<Integer> comparador = Collections.reverseOrder();
+		Arrays.sort(array, comparador);
+		
+		/*for(int i=0; i<5; i++) {
+			System.out.println(i+1+" - "+array[i]);
+		}*/
+		
+		return array;
+	}
+	
+	private void mostrarHighscores(JPanel panel, Integer[] array) {
+		int x = 40;
+		int y = 50;
+		JLabel[] high = new JLabel[5]; 
+		font = new Font("Calibri", 1, 28);
+		//borde = new LineBorder(new Color(187, 173, 160), 4);
+		for (int i = 0; i < 5; i++) {
+			high[i] = new JLabel(i+1+" - "+array[i]);
+			high[i].setHorizontalAlignment(SwingConstants.CENTER);
+			high[i].setBounds(x, y, 81, 14);
+			high[i].setFont(font2);
+			high[i].setForeground(new Color(255, 254, 253));
+			panel.add(high[i]);
+			System.out.println(high[i].getText());
+			/*for (int j = 0; j < 5; j++) {
+				tablero[i][j] = new JButton();
+				tablero[i][j].setBounds(x, y, 80, 80);
+				tablero[i][j].setBorder(borde);
+				tablero[i][j].setFont(font);
+				panel.add(tablero[i][j]);
+				x += 80;
+			}*/
+			y += 30;
+		}
 	}
 	
 	public void actualizarScore() {
@@ -232,7 +371,6 @@ public class InterfazGrafica implements KeyListener {
 			for (int j = 0; j < tablero[i].length; j++) {
 				tablero[i][j] = new JButton();
 				tablero[i][j].setBounds(x, y, 80, 80);
-				//tablero[i][j].
 				tablero[i][j].setBorder(borde);
 				tablero[i][j].setFont(font);
 				panel.add(tablero[i][j]);

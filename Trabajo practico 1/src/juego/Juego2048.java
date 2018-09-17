@@ -12,6 +12,7 @@ public class Juego2048
 	boolean movimientoDetectado;
 	private int score;
 	private int highscore;
+	private Integer[] puntajes;
 	
 
 	
@@ -24,12 +25,30 @@ public class Juego2048
 		tablero = new int[4][4];
 		score = 0;
 		mov=0;
+		highscore=700;
+		puntajes = new Integer[]{222, 444, 233, 500, 124, 100};
+		
 		generarNumero();
 		generarNumero();
 	}
 	
 	
 	
+	
+	public Integer[] getPuntajes() {
+		return puntajes;
+	}
+
+
+
+
+	public void setPuntajes(Integer[] puntajes) {
+		this.puntajes = puntajes;
+	}
+
+
+
+
 	public int getHighscore() {
 		return highscore;
 	}
