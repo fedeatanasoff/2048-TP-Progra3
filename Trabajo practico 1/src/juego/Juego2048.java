@@ -10,7 +10,12 @@ public class Juego2048
 {
 	int[][] tablero;
 	boolean movimientoDetectado;
-	int score;
+	private int score;
+	private int highscore;
+	
+
+	
+
 	public Integer mov;
 	
 	/*constructor*/
@@ -23,6 +28,20 @@ public class Juego2048
 		generarNumero();
 	}
 	
+	
+	
+	public int getHighscore() {
+		return highscore;
+	}
+
+
+
+	public void setHighscore(int highscore) {
+		this.highscore = highscore;
+	}
+
+
+
 	public void mostrar() 
 	{
 		for (int x=0; x < tablero.length; x++) {
@@ -63,6 +82,7 @@ public class Juego2048
 				if(tablero[i][j] == tablero[i][j-1])
 				{
 					tablero[i][j]=tablero[i][j]*2;
+					score += tablero[i][j];
 					tablero[i][j-1]=0;	
 				}
 		moverNumerosDerecha();
@@ -128,6 +148,7 @@ public class Juego2048
 				if(tablero[i][j] == tablero[i][j+1])
 				{
 					tablero[i][j]=tablero[i][j]*2;
+					score += tablero[i][j];
 					tablero[i][j+1]=0;
 				}
 		moverNumerosIzquierda();
@@ -192,6 +213,7 @@ public class Juego2048
 				if(tablero[i][j] == tablero[i-1][j])
 				{
 					tablero[i][j]=tablero[i][j]*2;
+					score += tablero[i][j];
 					tablero[i-1][j]=0;
 				}
 		moverNumerosAbajo();
@@ -249,11 +271,20 @@ public class Juego2048
 				if(tablero[i][j] == tablero[i+1][j])
 				{
 					tablero[i][j]=tablero[i][j]*2;
+					score += tablero[i][j];
 					tablero[i+1][j]=0;
 				}
 		moverNumerosArriba();
 	}
 	
+	public int getScore() {
+		return score;
+	}
+
+	public void setScore(int score) {
+		this.score = score;
+	}
+
 	private void moverNumerosArriba()
 	{
 		for (int i = 0; i < tablero.length; i++)
@@ -329,10 +360,7 @@ public class Juego2048
 		return tablero;
 	}
 	
-	public int score()
-	{
-		return score;
-	}
+	
 }
 
 

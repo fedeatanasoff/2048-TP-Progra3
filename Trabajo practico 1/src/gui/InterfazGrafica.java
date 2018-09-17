@@ -31,6 +31,8 @@ public class InterfazGrafica implements KeyListener {
 	private Font font2;
 	private Font font3;
 	private Border borde;
+	private JLabel scorePuntos; 
+	private JLabel highPuntos;
 
 	/**
 	 * Launch the application.
@@ -68,6 +70,8 @@ public class InterfazGrafica implements KeyListener {
 		tablero = new JButton[4][4];
 		JPanel panel = crearPanel();
 		tablero(panel);
+		scorePuntos = new JLabel("0");
+		highPuntos= new JLabel("500");
 		panelInfo();
 
 		frame.setFocusable(true);
@@ -119,7 +123,7 @@ public class InterfazGrafica implements KeyListener {
 		score.setForeground(new Color(238, 224, 211));
 		panelScore.add(score);
 			
-		JLabel scorePuntos = new JLabel(juego.mov.toString());
+		
 		scorePuntos.setHorizontalAlignment(SwingConstants.CENTER);
 		scorePuntos.setBounds(0, 36, 81, 14);
 		scorePuntos.setFont(font2);
@@ -139,7 +143,7 @@ public class InterfazGrafica implements KeyListener {
 		highscore.setForeground(new Color(238, 224, 211));
 		panelHigh.add(highscore);
 				
-		JLabel highPuntos = new JLabel("999999");
+
 		highPuntos.setHorizontalAlignment(SwingConstants.CENTER);
 		highPuntos.setBounds(0, 36, 90, 14);
 		highPuntos.setFont(font2);
@@ -162,7 +166,20 @@ public class InterfazGrafica implements KeyListener {
 		return info;
 		
 	}
-
+	
+	public void actualizarScore() {
+		scorePuntos.setText(""+juego.getScore()+"");
+		actualizarHighscore();
+	}
+	
+	public void actualizarHighscore() {
+		int high = Integer.parseInt(highPuntos.getText());
+		
+		if(juego.getScore() > high) {
+			highPuntos.setText(""+juego.getScore()+"");
+		}
+	}
+	
 	private JPanel crearPanel() {
 		JPanel panel = new JPanel();
 		panel.setBounds(10, 11, 320, 320);
@@ -176,18 +193,22 @@ public class InterfazGrafica implements KeyListener {
 		switch (keycode) {
 		case 38:
 			juego.moverArriba();
+			actualizarScore();
 			tablero(panel);
 			break;
 		case 37:
 			juego.moverIzquierda();
+			actualizarScore();
 			tablero(panel);
 			break;
 		case 39:
 			juego.moverDerecha();
+			actualizarScore();
 			tablero(panel);
 			break;
 		case 40:
 			juego.moverAbajo();
+			actualizarScore();
 			tablero(panel);
 			break;
 		case 10:
@@ -198,7 +219,7 @@ public class InterfazGrafica implements KeyListener {
 			System.out.println("default switch");
 			break;
 		}
-		System.out.println("score " + juego.score());
+		System.out.println("score " + juego.getScore());
 		System.out.println("movimientos: "+juego.mov);
 	}
 
@@ -211,7 +232,7 @@ public class InterfazGrafica implements KeyListener {
 			for (int j = 0; j < tablero[i].length; j++) {
 				tablero[i][j] = new JButton();
 				tablero[i][j].setBounds(x, y, 80, 80);
-				
+				//tablero[i][j].
 				tablero[i][j].setBorder(borde);
 				tablero[i][j].setFont(font);
 				panel.add(tablero[i][j]);
@@ -236,37 +257,30 @@ public class InterfazGrafica implements KeyListener {
 		case "2":
 			boton[fila][col].setBackground(new Color(238, 228, 218));
 			boton[fila][col].setForeground(new Color(118, 109, 100));
-			System.out.println("pintando numero 2");
 			break;
 		case "4":
 			boton[fila][col].setBackground(new Color(236, 224, 200));
 			boton[fila][col].setForeground(new Color(118, 109, 100));
-			System.out.println("pintando numero 4");
 			break;
 		case "8":
 			boton[fila][col].setBackground(new Color(242, 177, 121));
 			boton[fila][col].setForeground(new Color(247, 244, 239));
-			System.out.println("pintando numero 8");
 			break;
 		case "16":
 			boton[fila][col].setBackground(new Color(245, 149, 99));
 			boton[fila][col].setForeground(new Color(247, 244, 239));
-			System.out.println("pintando numero 16");
 			break;
 		case "32":
 			boton[fila][col].setBackground(new Color(245, 124, 95));
 			boton[fila][col].setForeground(new Color(247, 244, 239));
-			System.out.println("pintando numero 32");
 			break;
 		case "64":
 			boton[fila][col].setBackground(new Color(246, 93, 59));
 			boton[fila][col].setForeground(new Color(249, 245, 244));
-			System.out.println("pintando numero 64");
 			break;
 		case "128":
 			boton[fila][col].setBackground(new Color(237, 206, 113));
 			boton[fila][col].setForeground(new Color(249, 245, 244));
-			System.out.println("pintando numero 128");
 			break;
 		case "256":
 			boton[fila][col].setBackground(new Color(237, 203, 96));
@@ -276,28 +290,23 @@ public class InterfazGrafica implements KeyListener {
 		case "512":
 			boton[fila][col].setBackground(new Color(236, 200, 80));
 			boton[fila][col].setForeground(new Color(249, 245, 244));
-			System.out.println("pintando numero 512");
 			break;
 		case "1024":
 			boton[fila][col].setBackground(new Color(237, 197, 63));
 			boton[fila][col].setForeground(new Color(249, 245, 244));
-			System.out.println("pintando numero 1024");
 			break;
 		case "2048":
 			boton[fila][col].setBackground(new Color(238, 194, 46));
 			boton[fila][col].setForeground(new Color(249, 245, 244));
-			System.out.println("pintando numero 2048");
 			break;
 		case "4096":
 			boton[fila][col].setBackground(new Color(59, 56, 47));
 			boton[fila][col].setForeground(new Color(249, 245, 244));
-			System.out.println("pintando numero 4095");
 			break;
 		
 		default:
 			boton[fila][col].setBackground(new Color(204, 192, 180));
 			boton[fila][col].setForeground(new Color(204, 192, 180));
-			System.out.println("pintando numero 2");
 			break;
 		}
 		//System.out.println("score " + juego.score());
