@@ -3,33 +3,22 @@ package gui;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-
 import juego.Juego2048;
-
 import javax.swing.JButton;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
-import javax.swing.JTextField;
 import javax.swing.JLabel;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 import javax.swing.SwingConstants;
-import javax.swing.UIManager;
-
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
 
 public class InterfazGrafica implements KeyListener {
 
@@ -42,6 +31,7 @@ public class InterfazGrafica implements KeyListener {
 	private Border borde;
 	private JLabel scorePuntos; 
 	private JLabel highPuntos;
+	private JPanel panel;
 
 	/**
 	 * Launch the application.
@@ -77,7 +67,7 @@ public class InterfazGrafica implements KeyListener {
 
 		juego = new Juego2048();
 		tablero = new JButton[4][4];
-		JPanel panel = crearPanel();
+		panel = crearPanel();
 		tablero(panel);
 		scorePuntos = new JLabel("0");
 		highPuntos= new JLabel(""+ordenarResultados()[0]+"");
@@ -116,9 +106,7 @@ public class InterfazGrafica implements KeyListener {
 		titulo.setBounds(10, 11, 160, 30);
 		titulo.setFont(font);
 		titulo.setForeground(new Color(255, 254, 253));
-		panelTitulo.add(titulo);
-		
-		
+		panelTitulo.add(titulo);		
 				
 		JPanel panelScore = new JPanel();
 		panelScore.setBounds(21, 63, 80, 67);
@@ -131,8 +119,7 @@ public class InterfazGrafica implements KeyListener {
 		score.setBounds(0, 11, 81, 14);
 		score.setFont(font3);
 		score.setForeground(new Color(238, 224, 211));
-		panelScore.add(score);
-			
+		panelScore.add(score);			
 		
 		scorePuntos.setHorizontalAlignment(SwingConstants.CENTER);
 		scorePuntos.setBounds(0, 36, 81, 14);
@@ -151,8 +138,7 @@ public class InterfazGrafica implements KeyListener {
 		highscore.setBounds(0, 11, 90, 14);
 		highscore.setFont(font3);
 		highscore.setForeground(new Color(238, 224, 211));
-		panelHigh.add(highscore);
-				
+		panelHigh.add(highscore);				
 
 		highPuntos.setHorizontalAlignment(SwingConstants.CENTER);
 		highPuntos.setBounds(0, 36, 90, 14);
@@ -176,6 +162,10 @@ public class InterfazGrafica implements KeyListener {
 			public void mouseExited(MouseEvent e) {
 				newGame.setBackground(new Color(237, 153, 91));
 			}
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				System.out.println("evento");
+			}
 		});
 		
 		newGame.setHorizontalAlignment(SwingConstants.CENTER);
@@ -195,18 +185,14 @@ public class InterfazGrafica implements KeyListener {
 		panelRes.setBounds(21, 0, 182, 200);
 		panelRes.setBackground(new Color(187, 173, 160));
 		resultados.add(panelRes);
-		panelRes.setLayout(null);
-		
-			
+		panelRes.setLayout(null);			
 				
 		JLabel tituloRes = new JLabel("HIGHSCORES");
 		tituloRes.setHorizontalAlignment(SwingConstants.CENTER);
 		tituloRes.setBounds(10, 11, 160, 30);
 		tituloRes.setFont(font2);
 		tituloRes.setForeground(new Color(238, 224, 211));
-		panelRes.add(tituloRes);
-		
-		
+		panelRes.add(tituloRes);		
 		
 		JButton volverInfo = new JButton("VOLVER");
 		volverInfo.addMouseListener(new MouseAdapter() {
@@ -259,10 +245,7 @@ public class InterfazGrafica implements KeyListener {
 		btnMejoresPuntajes.setForeground(new Color(255, 254, 253));
 		btnMejoresPuntajes.setBounds(21, 250, 182, 33);
 		btnMejoresPuntajes.setBounds(21, 185, 182, 33);
-		info.add(btnMejoresPuntajes);	
-		
-		
-		
+		info.add(btnMejoresPuntajes); 		
 			
 		return info;
 		
@@ -271,12 +254,7 @@ public class InterfazGrafica implements KeyListener {
 	public Integer[] ordenarResultados() {
 		Integer[] array = juego.getPuntajes();
 		Comparator<Integer> comparador = Collections.reverseOrder();
-		Arrays.sort(array, comparador);
-		
-		/*for(int i=0; i<5; i++) {
-			System.out.println(i+1+" - "+array[i]);
-		}*/
-		
+		Arrays.sort(array, comparador);		
 		return array;
 	}
 	
@@ -285,7 +263,6 @@ public class InterfazGrafica implements KeyListener {
 		int y = 50;
 		JLabel[] high = new JLabel[5]; 
 		font = new Font("Calibri", 1, 28);
-		//borde = new LineBorder(new Color(187, 173, 160), 4);
 		for (int i = 0; i < 5; i++) {
 			high[i] = new JLabel(i+1+" - "+array[i]);
 			high[i].setHorizontalAlignment(SwingConstants.CENTER);
@@ -294,14 +271,6 @@ public class InterfazGrafica implements KeyListener {
 			high[i].setForeground(new Color(255, 254, 253));
 			panel.add(high[i]);
 			System.out.println(high[i].getText());
-			/*for (int j = 0; j < 5; j++) {
-				tablero[i][j] = new JButton();
-				tablero[i][j].setBounds(x, y, 80, 80);
-				tablero[i][j].setBorder(borde);
-				tablero[i][j].setFont(font);
-				panel.add(tablero[i][j]);
-				x += 80;
-			}*/
 			y += 30;
 		}
 	}
@@ -453,18 +422,15 @@ public class InterfazGrafica implements KeyListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void keyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub
-		
 	}
 }
