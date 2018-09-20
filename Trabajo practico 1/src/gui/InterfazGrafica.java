@@ -105,9 +105,9 @@ public class InterfazGrafica implements KeyListener {
 		if (juego.ganador() && gana) {
 			int resp = JOptionPane.showConfirmDialog(frame, "Quieres seguir jugando?", "GANASTE!!!",
 					JOptionPane.YES_NO_OPTION);
-			//juego.escribir("highscore.txt", juego.getScore(), true);
+			
 			if (resp != 0) {
-				//juego.escribir("highscore.txt", juego.getScore(), true);
+				
 				juego.getPuntajes();
 				System.exit(0);
 			} else {
@@ -124,12 +124,12 @@ public class InterfazGrafica implements KeyListener {
 					JOptionPane.YES_NO_OPTION);
 			juego.escribir("highscore.txt", juego.getScore(), true);
 			if (resp == 0) {
-				//juego.escribir("highscore.txt", juego.getScore(), true);
+				
 				juego.reiniciar();
 				juego.reiniciarScore();
 				tablero(panel);
 			} else
-				//juego.escribir("highscore.txt", juego.getScore(), true);
+				
 				System.exit(0);
 		}
 	}
