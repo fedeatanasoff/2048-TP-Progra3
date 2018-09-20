@@ -2,7 +2,11 @@ package juego;
 
 
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 
 
@@ -12,7 +16,9 @@ public class Juego2048
 	boolean movimientoDetectado;
 	private int score;
 	private int highscore;
-	private ArrayList<Integer> puntajes;
+	private int[] puntajes;
+	
+
 	public Integer mov;
 	
 	/*constructor*/
@@ -22,21 +28,25 @@ public class Juego2048
 		score = 0;
 		mov=0;
 		highscore=700;
-		puntajes = new ArrayList<Integer>();
+		puntajes = new int[1000];
+		//tablero[0][0]=1024;
+		//tablero[0][1]=1024;
 		cargarPuntajes();
-		
 		generarNumero();
 		generarNumero();
 	}
 
 	/*Puntajes*/
+	public int[] getPuntajes() {
+		return puntajes;
+	}
+
+	public void setPuntajes(int[] puntajes) {
+		this.puntajes = puntajes;
+	}
  	private void cargarPuntajes()
 	{
-		puntajes.add(343);
-		puntajes.add(2100);
-		puntajes.add(367);
-		puntajes.add(344);
-		puntajes.add(2000);
+		puntajes = leerPuntajes("highscore.txt");
 	}
 
 	public int getHighscore() 
@@ -363,16 +373,16 @@ public class Juego2048
 	}
 	
 	/*Agregar puntajes al ArrayList*/
-	public void agregarPuntaje(Integer puntaje)
+	/*public void agregarPuntaje(Integer puntaje)
 	{
 		puntajes.add(puntaje);
 	}
 	
-	/*Get del ArrayList de puntajes*/
+	Get del ArrayList de puntajes
 	public ArrayList<Integer> getPuntajes()
 	{
 		return puntajes;
-	}
+	}*/
 
 	/*Estado del tablero*/
 	public int[][] estado()
@@ -402,6 +412,45 @@ public class Juego2048
 		score= 0;
 	}
 	
+    public int[] leerPuntajes (String archivo){
+        
+        try{
+            File file = new File(archivo);
+            Scanner s = new Scanner(file);
+            int ctr= 0;
+            while( s.hasNextInt()){
+                ctr++;
+                s.nextInt();
+            }
+            
+            int[] array = new int[ctr];
+            Scanner s1 = new Scanner(file);
+            
+            for( int i=0; i<array.length; i++){
+                array[i] = s1.nextInt();
+            }
+            s1.close();
+            s.close();
+            return array;
+            
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+            return null;
+        }        
+    }
+    
+	public void escribir(String archivo, int valor, boolean agregar) {
+
+		try {
+			File file = new File(archivo);
+			FileWriter fw = new FileWriter(file, agregar);
+			PrintWriter pw = new PrintWriter(fw);
+			pw.print(" " + Integer.toString(valor));
+			pw.close();
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+	}
 }
 
 
