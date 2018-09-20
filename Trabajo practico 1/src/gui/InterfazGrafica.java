@@ -3,29 +3,20 @@ package gui;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-
 import juego.Juego2048;
-
 import javax.swing.JButton;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-
 import javax.swing.SwingConstants;
-
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 
 public class InterfazGrafica implements KeyListener {
 
@@ -40,8 +31,6 @@ public class InterfazGrafica implements KeyListener {
 	private JLabel highPuntos;
 	private JPanel panel;
 	private boolean gana;
-	private Integer jugadorPuntaje;
-
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -78,7 +67,6 @@ public class InterfazGrafica implements KeyListener {
 
 	private void crearJuego() {
 		gana = true;
-		jugadorPuntaje = 0;
 		juego = new Juego2048();
 		tablero = new JButton[4][4];
 		panel = crearPanel();
@@ -86,7 +74,7 @@ public class InterfazGrafica implements KeyListener {
 		tablero(panel);
 
 		scorePuntos = new JLabel("0");
-		highPuntos = new JLabel("" + ordenarResultados().get(0) + "");
+		highPuntos = new JLabel("" + ordenarResultados()[0] + "");
 	}
 	
 	private JPanel crearPanel() {
@@ -117,11 +105,13 @@ public class InterfazGrafica implements KeyListener {
 		if (juego.ganador() && gana) {
 			int resp = JOptionPane.showConfirmDialog(frame, "Quieres seguir jugando?", "GANASTE!!!",
 					JOptionPane.YES_NO_OPTION);
+			//juego.escribir("highscore.txt", juego.getScore(), true);
 			if (resp != 0) {
-				jugadorPuntaje = juego.getScore();
+				//juego.escribir("highscore.txt", juego.getScore(), true);
 				juego.getPuntajes();
 				System.exit(0);
 			} else {
+				juego.escribir("highscore.txt", juego.getScore(), true);
 				gana = false;
 
 			}
@@ -132,11 +122,14 @@ public class InterfazGrafica implements KeyListener {
 		if (juego.hayMovimientoValido() == false) {
 			int resp = JOptionPane.showConfirmDialog(frame, "Quieres volver a jugar?", "PERDISTE!",
 					JOptionPane.YES_NO_OPTION);
+			juego.escribir("highscore.txt", juego.getScore(), true);
 			if (resp == 0) {
+				//juego.escribir("highscore.txt", juego.getScore(), true);
 				juego.reiniciar();
 				juego.reiniciarScore();
 				tablero(panel);
 			} else
+				//juego.escribir("highscore.txt", juego.getScore(), true);
 				System.exit(0);
 		}
 	}
@@ -147,9 +140,7 @@ public class InterfazGrafica implements KeyListener {
 				tablero[fila][columna].setText(Integer.toString(juego.estado()[fila][columna]));
 				colorBoton(tablero[fila][columna].getText(), tablero, fila, columna);
 			}
-	}
-
-	
+	}	
 	
 	private void iniciarBotones(JPanel panel) {
 		int x = 0;
@@ -170,7 +161,6 @@ public class InterfazGrafica implements KeyListener {
 			x = 0;
 		}
 	}
-
 
 	private JPanel panelInfo() {
 		font2 = new Font("Calibri", 1, 20);
@@ -359,21 +349,36 @@ public class InterfazGrafica implements KeyListener {
 		info.add(newGame);
 	}
 
-	public ArrayList<Integer> ordenarResultados() {
-		ArrayList<Integer> array = juego.getPuntajes();
-		Comparator<Integer> comparador = Collections.reverseOrder();
-		array.sort(comparador);
+	public int[] ordenarResultados() {
+		int[] array = juego.getPuntajes();
+		ordenDescendiente(array);
 		return array;
 	}
+	
+	public void ordenDescendiente(int[] arreglo) {
+        for (int i = 0 ; i < arreglo.length - 1 ; i++) {
+            int max = i;
+  
+            for (int j = i + 1 ; j < arreglo.length ; j++) {
+                if (arreglo[j] > arreglo[max]) {
+                    max = j;    
+                }
+            } 
+            if (i != max) {
+                int aux = arreglo[i];
+                arreglo[i] = arreglo[max];
+                arreglo[max] = aux;
+            }
+        }
+	}       
 
-	private void mostrarHighscores(JPanel panel, ArrayList<Integer> array) {
+	private void mostrarHighscores(JPanel panel, int[] array) {
 		int x = 40;
 		int y = 50;
 		JLabel[] high = new JLabel[5];
 		font = new Font("Calibri", 1, 28);
-		// borde = new LineBorder(new Color(187, 173, 160), 4);
 		for (int i = 0; i < 5; i++) {
-			high[i] = new JLabel(i + 1 + " - " + array.get(i));
+			high[i] = new JLabel(i + 1 + " - " + array[i]);
 			high[i].setHorizontalAlignment(SwingConstants.CENTER);
 			high[i].setBounds(x, y, 81, 14);
 			high[i].setFont(font2);
@@ -461,7 +466,6 @@ public class InterfazGrafica implements KeyListener {
 		case "256":
 			boton[fila][col].setBackground(new Color(237, 203, 96));
 			boton[fila][col].setForeground(new Color(249, 245, 244));
-			System.out.println("pintando numero 256");
 			break;
 		case "512":
 			boton[fila][col].setBackground(new Color(236, 200, 80));
